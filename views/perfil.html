@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#173d2a">
+    <title>Meu perfil - AgroControl</title>
+    <link rel="stylesheet" href="assets/_common/styles/reset.css">
+    <link rel="stylesheet" href="assets/app/styles/profile.css">
+    <script src="assets/app/scripts/profile.js" defer></script>
+</head>
+<body>
+    <header class="profile-header">
+        <a class="brand" href="../index.html" aria-label="AgroControl - página inicial">
+            <span class="brand-mark" aria-hidden="true">🌱</span>
+            <span>AgroControl</span>
+        </a>
+        <nav class="header-nav" aria-label="Navegação principal">
+            <a href="app.html">Minha área</a>
+            <a class="header-link" href="../index.html">Página inicial</a>
+        </nav>
+    </header>
+
+    <main class="profile-main">
+        <section class="profile-intro" aria-labelledby="profile-title">
+            <p class="eyebrow">SUA CONTA, DO SEU JEITO</p>
+            <h1 id="profile-title">Meu perfil</h1>
+            <p>Cuide da sua identidade e mantenha sua conta protegida.</p>
+        </section>
+
+        <section class="profile-overview" aria-label="Resumo do perfil">
+            <figure class="avatar avatar-large">
+                <img data-profile-photo alt="Foto de perfil" hidden>
+                <span data-profile-initials aria-hidden="true">AC</span>
+            </figure>
+            <section class="profile-identity">
+                <p class="eyebrow">PERFIL DO PRODUTOR</p>
+                <h2 data-profile-name>Carregando perfil...</h2>
+                <p data-profile-email></p>
+            </section>
+            <p class="security-note"><span aria-hidden="true">🔒</span> Seus dados são privados e protegidos.</p>
+        </section>
+
+        <section class="profile-settings" aria-label="Configurações do perfil">
+            <article class="settings-card photo-card">
+                <header class="card-heading">
+                    <span class="heading-icon" aria-hidden="true">📷</span>
+                    <section>
+                        <p class="eyebrow">APARÊNCIA</p>
+                        <h2>Foto de perfil</h2>
+                        <p>Escolha uma imagem para personalizar sua conta.</p>
+                    </section>
+                </header>
+
+                <form data-profile-photo-form>
+                    <label class="upload-area" for="profile-photo-input">
+                        <span class="upload-icon" aria-hidden="true">↑</span>
+                        <span class="upload-title">Escolher uma imagem</span>
+                        <span class="upload-hint">JPG, PNG ou WEBP · até 5 MB</span>
+                        <input id="profile-photo-input" data-profile-photo-input name="photo" type="file" accept="image/jpeg,image/png,image/webp">
+                    </label>
+                    <p class="selected-file" data-selected-file aria-live="polite">Nenhuma imagem selecionada</p>
+                    <p class="feedback" data-profile-photo-feedback role="status" aria-live="polite"></p>
+                    <button class="button button-primary" type="submit">Atualizar foto</button>
+                </form>
+            </article>
+
+            <article class="settings-card password-card">
+                <header class="card-heading">
+                    <span class="heading-icon" aria-hidden="true">🛡️</span>
+                    <section>
+                        <p class="eyebrow">SEGURANÇA</p>
+                        <h2>Alterar senha</h2>
+                        <p>Use uma senha forte que você ainda não utiliza em outro lugar.</p>
+                    </section>
+                </header>
+
+                <form data-profile-password-form>
+                    <label class="field-label" for="current-password">Senha atual</label>
+                    <input class="field-input" id="current-password" name="current_password" type="password" autocomplete="current-password" placeholder="Digite sua senha atual" required>
+
+                    <label class="field-label" for="new-password">Nova senha</label>
+                    <input class="field-input" id="new-password" name="new_password" type="password" autocomplete="new-password" minlength="8" placeholder="Pelo menos 8 caracteres" required>
+
+                    <label class="field-label" for="confirm-password">Confirme a nova senha</label>
+                    <input class="field-input" id="confirm-password" name="confirm_password" type="password" autocomplete="new-password" minlength="8" placeholder="Digite a nova senha novamente" required>
+
+                    <p class="password-hint">A nova senha deve ter pelo menos 8 caracteres.</p>
+                    <p class="feedback" data-profile-password-feedback role="status" aria-live="polite"></p>
+                    <button class="button button-dark" type="submit">Salvar nova senha</button>
+                </form>
+            </article>
+        </section>
+
+        <a class="back-link" href="app.html"><span aria-hidden="true">←</span> Voltar para minha área</a>
+    </main>
+
+    <footer class="profile-footer">
+        <p>AgroControl <span aria-hidden="true">·</span> Gestão rural simples e próxima.</p>
+    </footer>
+</body>
+</html>

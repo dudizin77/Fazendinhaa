@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Área do Cliente - AgroControl</title>
+    <link rel="stylesheet" href="../assets/_common/styles/reset.css">
+    <link rel="stylesheet" href="../assets/public/styles/home.css">
+    <style>
+        .card-link { text-decoration: none; color: inherit; }
+        .card-link:hover { transform: translateY(-4px); }
+    </style>
+</head>
+<body>
+    <header class="header" style="background: linear-gradient(90deg,#1f4d2e 60%,#3fa35c 100%); color: #fff; padding: 24px 0 12px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.07);">
+        <div style="display:flex;align-items:center;justify-content:space-between;max-width:1100px;margin:0 auto;">
+            <h1 style="font-size:2.2rem;letter-spacing:1px;display:flex;align-items:center;gap:10px;">👤 Área do Cliente</h1>
+            <nav style="display:flex;gap:18px;">
+                <a href="index.html" style="color:#fff;text-decoration:none;font-weight:500;">Início</a>
+                <a href="perfil.html" style="color:#fff;text-decoration:none;font-weight:500;">Meu perfil</a>
+                <a href="#" id="logout" style="background:#fff;color:#1f4d2e;padding:8px 22px;border-radius:8px;text-decoration:none;font-weight:600;cursor:pointer;">Sair</a>
+            </nav>
+        </div>
+    </header>
+    <main style="max-width:1100px;margin:40px auto 0 auto;padding:0 16px;">
+        <h2 style="color:#1f4d2e;font-size:2rem;margin-bottom:24px;">Bem-vindo à sua área exclusiva!</h2>
+        <div style="display:flex;gap:32px;flex-wrap:wrap;">
+            <a href="animais.html" class="card-link" style="flex:1 1 260px;min-width:260px;background:#fff;padding:32px 24px;border-radius:15px;box-shadow:0 0 10px rgba(0,0,0,0.08);transition:transform 0.2s;">
+                <h3 style="color:#3fa35c;margin-bottom:12px;">🐄 Meus Animais</h3>
+                <p>Gerencie o cadastro e informações dos seus animais.</p>
+            </a>
+            <a href="despesas.html" class="card-link" style="flex:1 1 260px;min-width:260px;background:#fff;padding:32px 24px;border-radius:15px;box-shadow:0 0 10px rgba(0,0,0,0.08);transition:transform 0.2s;">
+                <h3 style="color:#3fa35c;margin-bottom:12px;">💸 Despesas</h3>
+                <p>Registre e acompanhe as despesas da fazenda.</p>
+            </a>
+            <a href="lucros.html" class="card-link" style="flex:1 1 260px;min-width:260px;background:#fff;padding:32px 24px;border-radius:15px;box-shadow:0 0 10px rgba(0,0,0,0.08);transition:transform 0.2s;">
+                <h3 style="color:#3fa35c;margin-bottom:12px;">💰 Lucros</h3>
+                <p>Visualize saldo, lucros e receitas da fazenda.</p>
+            </a>
+            <a href="perfil.html" class="card-link" style="flex:1 1 260px;min-width:260px;background:#fff;padding:32px 24px;border-radius:15px;box-shadow:0 0 10px rgba(0,0,0,0.08);transition:transform 0.2s;">
+                <h3 style="color:#3fa35c;margin-bottom:12px;">👤 Meu perfil</h3>
+                <p>Atualize sua foto e mantenha sua senha protegida.</p>
+            </a>
+        </div>
+    </main>
+    <script src="../assets/public/scripts/app.js"></script>
+</body>
+</html>

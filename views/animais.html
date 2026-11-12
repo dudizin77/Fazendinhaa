@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meus Animais - AgroControl</title>
+    <link rel="stylesheet" href="assets/_common/styles/reset.css">
+    <link rel="stylesheet" href="assets/public/styles/home.css">
+    <style>
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 16px; }
+        .section { background: #fff; padding: 24px; border-radius: 12px; margin-bottom: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .form-group { margin-bottom: 16px; }
+        input, select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 1rem; }
+        button { background: #3fa35c; color: #fff; padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; }
+        button:hover { background: #2d8a48; }
+        button.btn-delete { background: #dc3545; }
+        button.btn-delete:hover { background: #c82333; }
+        button.btn-edit { background: #007bff; }
+        table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: #f7faf7; font-weight: 600; color: #1f4d2e; }
+        tr:hover { background: #f7faf7; }
+    </style>
+</head>
+<body>
+    <header class="header" style="background: linear-gradient(90deg,#1f4d2e 60%,#3fa35c 100%); color: #fff; padding: 24px 0 12px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.07);">
+        <div style="display:flex;align-items:center;justify-content:space-between;max-width:1100px;margin:0 auto;">
+            <h1 style="font-size:2.2rem;letter-spacing:1px;display:flex;align-items:center;gap:10px;">🐄 Meus Animais</h1>
+            <nav style="display:flex;gap:18px;">
+                <a href="app.html" style="color:#fff;text-decoration:none;font-weight:500;">Dashboard</a>
+                <a href="#" id="logout" style="background:#fff;color:#1f4d2e;padding:8px 22px;border-radius:8px;text-decoration:none;font-weight:600;cursor:pointer;">Sair</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container" style="margin-top: 40px; margin-bottom: 40px;">
+        <div class="section">
+            <h2 style="color: #1f4d2e; margin-bottom: 24px;">Cadastrar Novo Animal</h2>
+            
+            <form id="formAnimal">
+                <div class="form-group">
+                    <label>Nome do Animal*</label>
+                    <input type="text" name="nome" required>
+                </div>
+                <div class="form-group">
+                    <label>Raça*</label>
+                    <select id="racaSelect" name="raca_id" required>
+                        <option value="">Carregando raças...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Sexo*</label>
+                    <select name="sexo" required>
+                        <option value="">Selecione</option>
+                        <option value="M">Macho</option>
+                        <option value="F">Fêmea</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Data de Nascimento*</label>
+                    <input type="date" name="data_nascimento" required>
+                </div>
+                <div class="form-group">
+                    <label>Peso (kg)*</label>
+                    <input type="number" step="0.01" name="peso" required>
+                </div>
+                <button type="submit">Cadastrar Animal</button>
+            </form>
+        </div>
+
+        <div class="section">
+            <h2 style="color: #1f4d2e; margin-bottom: 24px;">Grupos de Animais</h2>
+            <form id="formGrupo" style="margin-bottom:16px;">
+                <div class="form-group">
+                    <label>Nome do Grupo*</label>
+                    <input type="text" name="nome" required>
+                </div>
+                <div class="form-group">
+                    <label>Quantidade*</label>
+                    <input type="number" name="quantidade" required min="0">
+                </div>
+                <button type="submit">Criar Grupo</button>
+            </form>
+
+            <table id="gruposTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Quantidade</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td colspan="4" style="text-align:center;">Carregando...</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2 style="color: #1f4d2e; margin-bottom: 24px;">Meus Animais</h2>
+            <table id="animaisTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Raça</th>
+                        <th>Sexo</th>
+                        <th>Peso (kg)</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td colspan="6" style="text-align: center;">Carregando...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <script src="assets/public/scripts/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Carregar raças no select
+            carregarRacas(document.getElementById('racaSelect'));
+
+            // Listar animais e grupos existentes
+            listarAnimais();
+            listarGrupos();
+
+            // Enviar formulário de novo grupo
+            const formGrupo = document.getElementById('formGrupo');
+            if (formGrupo) {
+                formGrupo.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const formData = {
+                        nome: this.querySelector('input[name="nome"]').value,
+                        quantidade: parseInt(this.querySelector('input[name="quantidade"]').value)
+                    };
+                    criarGrupo(formData);
+                });
+            }
+
+            // Enviar formulário de novo animal
+            document.getElementById('formAnimal').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formData = {
+                    nome: this.querySelector('input[name="nome"]').value,
+                    raca_id: parseInt(this.querySelector('select[name="raca_id"]').value),
+                    sexo: this.querySelector('select[name="sexo"]').value,
+                    data_nascimento: this.querySelector('input[name="data_nascimento"]').value,
+                    peso: parseFloat(this.querySelector('input[name="peso"]').value)
+                };
+                criarAnimal(formData);
+                this.reset();
+            });
+        });
+    </script>
+</body>
+</html>

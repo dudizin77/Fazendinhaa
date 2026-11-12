@@ -1,0 +1,4 @@
+$  = json_decode(file_get_contents("php://input"), true);
+tirei isso de todos os coisas da controller, e deu problema no "app.js" pq tirei isso porem nao sei arrumar
+
+fazer os tokens

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Espécies - AgroControl Admin</title>
+    <link rel="stylesheet" href="../_common/styles/reset.css">
+    <link rel="stylesheet" href="../public/styles/home.css">
+    <style>
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 16px; }
+        .section { background: #fff; padding: 24px; border-radius: 12px; margin-bottom: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .form-group { margin-bottom: 16px; }
+        input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 1rem; }
+        button { background: #3fa35c; color: #fff; padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; }
+        button:hover { background: #2d8a48; }
+        button.btn-delete { background: #dc3545; }
+        button.btn-delete:hover { background: #c82333; }
+        table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: #f7faf7; font-weight: 600; color: #1f4d2e; }
+        tr:hover { background: #f7faf7; }
+    </style>
+</head>
+<body>
+    <header class="header" style="background: linear-gradient(90deg,#1f4d2e 60%,#3fa35c 100%); color: #fff; padding: 24px 0 12px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.07);">
+        <div style="display:flex;align-items:center;justify-content:space-between;max-width:1100px;margin:0 auto;">
+            <h1 style="font-size:2.2rem;letter-spacing:1px;">🔬 Gerenciar Espécies</h1>
+            <nav style="display:flex;gap:18px;">
+                <a href="index.html" style="color:#fff;text-decoration:none;font-weight:500;">Voltar</a>
+                <a href="#" id="logout" style="background:#fff;color:#1f4d2e;padding:8px 22px;border-radius:8px;text-decoration:none;font-weight:600;cursor:pointer;">Sair</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container" style="margin-top: 40px; margin-bottom: 40px;">
+        <div class="section">
+            <h2 style="color: #1f4d2e; margin-bottom: 24px;">Cadastrar Nova Espécie</h2>
+            <form id="formEspecie">
+                <div class="form-group">
+                    <label>Nome da Espécie*</label>
+                    <input type="text" name="nome" required>
+                </div>
+                <button type="submit">Cadastrar</button>
+            </form>
+        </div>
+
+        <div class="section">
+            <h2 style="color: #1f4d2e; margin-bottom: 24px;">Espécies Cadastradas</h2>
+            <table id="especiesTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td colspan="3" style="text-align: center;">Carregando...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <script src="../public/scripts/admin.js"></script>
+    <script>
+        const API_BASE = 'http://localhost/fazendinha/api';
+
+        function listarEspecies() {
+            fetch(`${API_BASE}/especies/list`)
+            .then(r => r.json())
+            .then(data => {
+                const tbody = document.querySelector('#especiesTable tbody');
+                tbody.innerHTML = '';
+                if (data.data) {
+                    data.data.forEach(e => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td>${e.id}</td>
+                            <td>${e.nome}</td>
+                            <td><button class="btn-delete" onclick="deletarEspecie(${e.id})">Deletar</button></td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                }
+            });
+        }
+
+        function deletarEspecie(id) {
+            if (confirm('Tem certeza?')) {
+                fetch(`${API_BASE}/especies/${id}`, { method: 'DELETE' })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.type === 'success') {
+                        listarEspecies();
+                    }
+                });
+            }
+        }
+
+        document.getElementById('formEspecie').addEventListener('submit', function(e) {
+            e.preventDefault();
+            fetch(`${API_BASE}/especies/`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nome: this.querySelector('input[name="nome"]').value })
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.type === 'success') {
+                    listarEspecies();
+                    this.reset();
+                }
+            });
+        });
+
+        document.getElementById('logout').onclick = function(e) {
+            e.preventDefault();
+            localStorage.clear();
+            window.location.href = '../../index.html';
+        };
+
+        listarEspecies();
+    </script>
+</body>
+</html>

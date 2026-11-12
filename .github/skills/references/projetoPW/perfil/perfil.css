@@ -1,0 +1,196 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    width: 100%;
+}
+.perfil-card {
+    width: 350px;
+    margin: 50px auto;
+    padding: 25px;
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    text-align: center;
+}
+
+.perfil-card .foto {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-bottom: 15px;
+}
+
+.perfil-card .btn {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: #8400ff;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.perfil-card .btn:hover {
+    background-color: #5e00ba;
+}
+
+.extras p {
+    font-size: 14px;
+    color: #333;
+}
+
+/* contêiner principal com aside e conteúdo lado a lado */
+#container {
+    display: flex;
+    height: calc(100vh - 48px); /* ocupa a tela toda, exceto o header */
+}
+
+/* barra lateral */
+#aside {
+    border: solid 1px rgba(0, 0, 0, 0.342);
+    width: 250px;
+    height: 99.8%;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.425);
+    display: flex;
+    flex-direction: column;
+}
+#logout{
+  border: solid 1px #00000000;
+  border-radius: 10px;
+  padding: 10px 25px;
+  cursor: pointer;
+  font-size: 16px;
+  background-color: #8400ff;
+  transition: 0.2s;
+  color: #fff;
+    font-family: 'Poppins', sans-serif;
+
+}
+#aside button{
+    padding-left: -20px;
+    padding-right: -20px;
+    height: 30px;
+}
+
+/* área principal ao lado do aside */
+#saldoDaConta {
+    flex: 1;
+    padding: 20px;
+}
+
+/* cabeçalho */
+header {
+    height: 48px;
+    width: 100%;
+    background-color: #8400ff;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 2px 2px 5px black;
+}
+footer {
+    font-size: small;
+    height: 48px;
+    width: 100%;
+    background-color: #8400ff;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+}
+
+header a {
+    color: white;
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: 0.3s all;
+}
+
+header a:hover {
+    color: #f3d188;
+}
+
+section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+}
+
+#box {
+    width: 300px;
+    border: 1px solid rgb(255, 255, 255);
+    border-radius: 5px;
+    background-color: #8400ff;
+    padding: 15px 30px;
+    display: flex;
+    flex-direction: column;
+    color: white;
+}
+
+#box span {
+    margin-bottom: 5px;
+}
+
+#box .text {
+    padding: 5px 10px;
+    margin-bottom: 20px;
+    border-radius: 3px;
+}
+
+#box .button {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: #ffffff;
+    padding: 10px 20px;
+    font-size: 1.4rem;
+    font-weight: bold;
+    border-radius: 3px;
+    border: none;
+    transition: 0.3s all;
+    cursor: pointer;
+}
+
+#box .button:hover {
+    filter: brightness(1.3);
+}
+
+#box .error {
+    color: red;
+}
+
+#box #signup a {
+    color: #f3d188a0;
+    text-decoration: none;
+    transition: 0.3s all;
+    margin-left: 5px;
+}
+
+#box #signup a:hover {
+    color: #f3d188;
+}
+
+.toast {
+    position: fixed;
+    bottom: 0;
+    margin: auto;
+    background-color: #323232;
+    color: white;
+    padding: 15px 40px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    font-size: 1.7rem;
+}
+button{
+    font-family: 'Poppins', sans-serif;
+}
+#dados{
+    padding-left: 15px;
+}

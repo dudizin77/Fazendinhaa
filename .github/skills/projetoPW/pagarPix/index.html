@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="pagar.css">
+    <script type="module" src="pagar.js" defer></script>
+    <title>Pagar no Pix</title>
+</head>
+<body>
+
+<header>
+    <a href="/projetoPW/perfil">
+        <img src="/projetoPW/fotos/fotodePerfil.png" width="35" height="35">
+    </a>
+    <p>Pagar pix</p>
+    <a href="/projetoPW/pagInicial">Voltar</a>
+</header>
+
+<div id="container">
+
+    <div id="saldoDaConta"></div>
+
+    <div class="pix-box">
+        <h2>Enviar Pix</h2>
+
+        <label for="inputChavePix">Cole sua chave</label>
+        <input type="text" id="inputChavePix">
+
+        <label for="inputValorPix">Valor do Pix</label>
+        <input type="number" id="inputValorPix">
+
+        <button id="enviar">Enviar Pix</button>
+    </div>
+
+</div>
+<div id="msg">
+    
+</div>
+<div id="confirmacao" class="modal">
+    <div class="modal-content">
+        <h3>Confirmar envio</h3>
+        <p id="textoConfirmacao"></p>
+        <div class="botoes">
+            <button id="confirmarEnvio" class="confirmar">Confirmar</button>
+            <button id="cancelarEnvio" class="cancelar">Cancelar</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>

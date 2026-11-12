@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Raças - AgroControl Admin</title>
+    <link rel="stylesheet" href="../_common/styles/reset.css">
+    <link rel="stylesheet" href="../public/styles/home.css">
+    <style>
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 16px; }
+        .section { background: #fff; padding: 24px; border-radius: 12px; margin-bottom: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .form-group { margin-bottom: 16px; }
+        input, select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 1rem; }
+        button { background: #3fa35c; color: #fff; padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; }
+        button:hover { background: #2d8a48; }
+        button.btn-delete { background: #dc3545; }
+        button.btn-delete:hover { background: #c82333; }
+        table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: #f7faf7; font-weight: 600; color: #1f4d2e; }
+        tr:hover { background: #f7faf7; }
+    </style>
+</head>
+<body>
+    <header class="header" style="background: linear-gradient(90deg,#1f4d2e 60%,#3fa35c 100%); color: #fff; padding: 24px 0 12px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.07);">
+        <div style="display:flex;align-items:center;justify-content:space-between;max-width:1100px;margin:0 auto;">
+            <h1 style="font-size:2.2rem;letter-spacing:1px;">🦴 Gerenciar Raças</h1>
+            <nav style="display:flex;gap:18px;">
+                <a href="index.html" style="color:#fff;text-decoration:none;font-weight:500;">Voltar</a>
+                <a href="#" id="logout" style="background:#fff;color:#1f4d2e;padding:8px 22px;border-radius:8px;text-decoration:none;font-weight:600;cursor:pointer;">Sair</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container" style="margin-top: 40px; margin-bottom: 40px;">
+        <div class="section">
+            <h2 style="color: #1f4d2e; margin-bottom: 24px;">Cadastrar Nova Raça</h2>
+            <form id="formRaca">
+                <div class="form-group">
+                    <label>Espécie*</label>
+                    <select id="especieSelect" name="especie_id" required>
+                        <option value="">Carregando...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Nome da Raça*</label>
+                    <input type="text" name="nome" required>
+                </div>
+                <button type="submit">Cadastrar</button>
+            </form>
+        </div>
+
+        <div class="section">
+            <h2 style="color: #1f4d2e; margin-bottom: 24px;">Raças Cadastradas</h2>
+            <table id="racasTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Espécie</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td colspan="4" style="text-align: center;">Carregando...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <script src="../public/scripts/admin.js"></script>
+    <script>
+        const API_BASE = 'http://localhost/fazendinha/api';
+
+        function listarRacas() {
+            fetch(`${API_BASE}/racas/list`)
+            .then(r => r.json())
+            .then(data => {
+                const tbody = document.querySelector('#racasTable tbody');
+                tbody.innerHTML = '';
+                if (data.data) {
+                    data.data.forEach(r => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td>${r.id}</td>
+                            <td>${r.nome}</td>
+                            <td>${r.especie_nome}</td>
+                            <td><button class="btn-delete" onclick="deletarRaca(${r.id})">Deletar</button></td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                }
+            });
+        }
+
+        function carregarEspecies() {
+            fetch(`${API_BASE}/especies/list`)
+            .then(r => r.json())
+            .then(data => {
+                const select = document.getElementById('especieSelect');
+                select.innerHTML = '<option value="">Selecione</option>';
+                if (data.data) {
+                    data.data.forEach(e => {
+                        const opt = document.createElement('option');
+                        opt.value = e.id;
+                        opt.textContent = e.nome;
+                        select.appendChild(opt);
+                    });
+                }
+            });
+        }
+
+        function deletarRaca(id) {
+            if (confirm('Tem certeza?')) {
+                fetch(`${API_BASE}/racas/${id}`, { method: 'DELETE' })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.type === 'success') {
+                        listarRacas();
+                    }
+                });
+            }
+        }
+
+        document.getElementById('formRaca').addEventListener('submit', function(e) {
+            e.preventDefault();
+            fetch(`${API_BASE}/racas/`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    especie_id: parseInt(this.querySelector('select[name="especie_id"]').value),
+                    nome: this.querySelector('input[name="nome"]').value
+                })
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.type === 'success') {
+                    listarRacas();
+                    this.reset();
+                }
+            });
+        });
+
+        document.getElementById('logout').onclick = function(e) {
+            e.preventDefault();
+            localStorage.clear();
+            window.location.href = '../../index.html';
+        };
+
+        carregarEspecies();
+        listarRacas();
+    </script>
+</body>
+</html>

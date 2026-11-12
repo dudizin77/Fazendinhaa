@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="pagInicial.css">
+    <script type="module" src="pagInicial.js" defer></script>
+    <title>Inicio</title>
+</head>
+<body>
+    <header>
+        <a href="/projetoPW/perfil"><img src="/projetoPW/fotos/fotodePerfil.png" width="35px" height="35px"></a>
+        <p>Pagina inicial</p>
+        <button id="logout">logout</button>
+    </header>
+
+    <div id="container">
+        <aside id="aside">
+        <button id="areapix">Pagar com pix</button>
+        <button id="investimentos">Investimentos</button>
+        <button class="naoDisponivel">Emprestismos</button>
+        <button class="naoDisponivel">Cartão de crédito</button>
+        <button class="naoDisponivel">Financiamentos</button>
+        <button class="naoDisponivel">Consignado</button>
+        <button id="extrato">Ver extrato</button>
+        <button class="naoDisponivel">Suporte</button>
+        </aside>
+
+<div id="saldoDaConta">
+
+    <div id="cardContainer">
+        <h2>Seu cartão</h2>
+
+        <div class="cartao">
+            <p class="numero">1234 •••• •••• 9876</p>
+
+            <div class="linha">
+                <span class="titulo">Titular</span>
+                <span class="titulo">Validade</span>
+            </div>
+
+            <div class="linha">
+                <span class="nomeUsuario"></span>
+                <span class="valor">12/29</span>
+            </div>
+            <div id="saldoDoUsuario"></div>
+        </div>
+    </div>
+</div>
+
+    </div>
+    <footer>
+    <p>&copy; 2025 - Meu Banco Digital - Todos os direitos reservados</p>
+</footer>
+</body>
+</html>

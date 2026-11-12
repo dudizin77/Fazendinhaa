@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Categorias - AgroControl Admin</title>
+    <link rel="stylesheet" href="../_common/styles/reset.css">
+    <link rel="stylesheet" href="../public/styles/home.css">
+    <style>
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 16px; }
+        .section { background: #fff; padding: 24px; border-radius: 12px; margin-bottom: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .form-group { margin-bottom: 16px; }
+        input, select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 1rem; }
+        button { background: #3fa35c; color: #fff; padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; }
+        button:hover { background: #2d8a48; }
+        button.btn-delete { background: #dc3545; }
+        button.btn-delete:hover { background: #c82333; }
+        table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: #f7faf7; font-weight: 600; color: #1f4d2e; }
+        tr:hover { background: #f7faf7; }
+        .tabs { display: flex; gap: 12px; margin-bottom: 24px; border-bottom: 2px solid #ddd; }
+        .tab-btn { padding: 12px 24px; background: none; border: none; cursor: pointer; font-weight: 600; border-bottom: 3px solid transparent; color: #1f4d2e; }
+        .tab-btn.active { color: #3fa35c; border-bottom-color: #3fa35c; }
+    </style>
+</head>
+<body>
+    <header class="header" style="background: linear-gradient(90deg,#1f4d2e 60%,#3fa35c 100%); color: #fff; padding: 24px 0 12px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.07);">
+        <div style="display:flex;align-items:center;justify-content:space-between;max-width:1100px;margin:0 auto;">
+            <h1 style="font-size:2.2rem;letter-spacing:1px;">📁 Gerenciar Categorias</h1>
+            <nav style="display:flex;gap:18px;">
+                <a href="index.html" style="color:#fff;text-decoration:none;font-weight:500;">Voltar</a>
+                <a href="#" id="logout" style="background:#fff;color:#1f4d2e;padding:8px 22px;border-radius:8px;text-decoration:none;font-weight:600;cursor:pointer;">Sair</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container" style="margin-top: 40px; margin-bottom: 40px;">
+        <!-- Categorias de Despesas -->
+        <div class="section">
+            <div class="tabs">
+                <button class="tab-btn active" onclick="mudarAba('despesas')">💸 Despesas</button>
+                <button class="tab-btn" onclick="mudarAba('lucros')">💰 Lucros</button>
+            </div>
+
+            <!-- ABA DESPESAS -->
+            <div id="abaDespesas">
+                <h2 style="color: #1f4d2e; margin-bottom: 24px;">Cadastrar Categoria de Despesa</h2>
+                <form id="formDespesa">
+                    <div class="form-group">
+                        <label>Nome da Categoria*</label>
+                        <input type="text" name="nome" required>
+                    </div>
+                    <button type="submit">Cadastrar</button>
+                </form>
+
+                <h2 style="color: #1f4d2e; margin-top: 32px; margin-bottom: 24px;">Categorias de Despesa</h2>
+                <table id="despesasTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td colspan="3" style="text-align: center;">Carregando...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- ABA LUCROS -->
+            <div id="abaLucros" style="display: none;">
+                <h2 style="color: #1f4d2e; margin-bottom: 24px;">Cadastrar Categoria de Lucro</h2>
+                <form id="formLucro">
+                    <div class="form-group">
+                        <label>Nome da Categoria*</label>
+                        <input type="text" name="nome" required>
+                    </div>
+                    <button type="submit">Cadastrar</button>
+                </form>
+
+                <h2 style="color: #1f4d2e; margin-top: 32px; margin-bottom: 24px;">Categorias de Lucro</h2>
+                <table id="lucrosTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td colspan="3" style="text-align: center;">Carregando...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script src="../public/scripts/admin.js"></script>
+    <script>
+        const API_BASE = 'http://localhost/fazendinha/api';
+
+        function mudarAba(aba) {
+            document.getElementById('abaDespesas').style.display = aba === 'despesas' ? 'block' : 'none';
+            document.getElementById('abaLucros').style.display = aba === 'lucros' ? 'block' : 'none';
+            
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        function listarCategoriasDespesas() {
+            fetch(`${API_BASE}/categorias-despesas/list`)
+            .then(r => r.json())
+            .then(data => {
+                const tbody = document.querySelector('#despesasTable tbody');
+                tbody.innerHTML = '';
+                if (data.data) {
+                    data.data.forEach(c => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td>${c.id}</td>
+                            <td>${c.nome}</td>
+                            <td><button class="btn-delete" onclick="deletarCategoriaDespesa(${c.id})">Deletar</button></td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                }
+            });
+        }
+
+        function listarCategoriasLucros() {
+            fetch(`${API_BASE}/categorias-lucros/list`)
+            .then(r => r.json())
+            .then(data => {
+                const tbody = document.querySelector('#lucrosTable tbody');
+                tbody.innerHTML = '';
+                if (data.data) {
+                    data.data.forEach(c => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td>${c.id}</td>
+                            <td>${c.nome}</td>
+                            <td><button class="btn-delete" onclick="deletarCategoriaLucro(${c.id})">Deletar</button></td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                }
+            });
+        }
+
+        function deletarCategoriaDespesa(id) {
+            if (confirm('Tem certeza?')) {
+                fetch(`${API_BASE}/categorias-despesas/${id}`, { method: 'DELETE' })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.type === 'success') {
+                        listarCategoriasDespesas();
+                    }
+                });
+            }
+        }
+
+        function deletarCategoriaLucro(id) {
+            if (confirm('Tem certeza?')) {
+                fetch(`${API_BASE}/categorias-lucros/${id}`, { method: 'DELETE' })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.type === 'success') {
+                        listarCategoriasLucros();
+                    }
+                });
+            }
+        }
+
+        document.getElementById('formDespesa').addEventListener('submit', function(e) {
+            e.preventDefault();
+            fetch(`${API_BASE}/categorias-despesas/`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nome: this.querySelector('input[name="nome"]').value })
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.type === 'success') {
+                    listarCategoriasDespesas();
+                    this.reset();
+                }
+            });
+        });
+
+        document.getElementById('formLucro').addEventListener('submit', function(e) {
+            e.preventDefault();
+            fetch(`${API_BASE}/categorias-lucros/`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nome: this.querySelector('input[name="nome"]').value })
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.type === 'success') {
+                    listarCategoriasLucros();
+                    this.reset();
+                }
+            });
+        });
+
+        document.getElementById('logout').onclick = function(e) {
+            e.preventDefault();
+            localStorage.clear();
+            window.location.href = '../../index.html';
+        };
+
+        listarCategoriasDespesas();
+        listarCategoriasLucros();
+    </script>
+</body>
+</html>
